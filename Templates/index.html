@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HB Detection</title>
+</head>
+<body>
+    <h2>Upload an Eyelid Image</h2>
+    <input type="file" id="imageUpload">
+    <button onclick="predictHb()">Predict HB Level</button>
+    <h3 id="result"></h3>
+
+    <script>
+        function predictHb() {
+            let file = document.getElementById("imageUpload").files[0];
+            let formData = new FormData();
+            formData.append("file", file);
+
+            fetch("/predict", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerText = "Hemoglobin Level: " + data.hb_level;
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
